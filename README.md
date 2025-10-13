@@ -8,3 +8,7 @@ conda create -n "ainews" python=3.12
 conda activate ainews
 pip install -r requirements.txt
 ```
+
+```bash
+ollama serve
+```
