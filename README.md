@@ -1,5 +1,5 @@
 # ai-newsletter-agent
-AI Newsletter Agent that send summarized info on new paper releases on arXiv
+AI Newsletter Agent that sends summarized info on new paper releases on arXiv. Based on OpenRouter
 
 ### Create conda environment and install dependencies
 
@@ -9,6 +9,10 @@ conda activate ainews
 pip install -r requirements.txt
 ```
 
+### Example usage
+
+The following should take only a few seconds (~3s).
+
 ```bash
-ollama serve
+OPENROUTER_API_KEY=<OPENROUTER_API_KEY> time python agent.py --model google/gemma-3-4b-it:free
 ```

@@ -2,8 +2,9 @@ import argparse
 import logging
 import datetime
 from typing import TypedDict
+from os import getenv
 
-from langchain_ollama.chat_models import ChatOllama
+from langchain_openai import ChatOpenAI
 from langgraph.graph import START, END, MessagesState, StateGraph
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -20,12 +21,14 @@ logging.basicConfig(
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description="LLM parameters")
-parser.add_argument("--model", type=str, default="gemma3:4b-it-qat")
+parser.add_argument("--model", type=str, default="google/gemma-3-4b-it:free")
 parser.add_argument("--temperature", type=float, default=0.7)
 args = parser.parse_args()
 
 # Load model interface
-model = ChatOllama(
+model = ChatOpenAI(
+    api_key=getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1",
     model=args.model,
     temperature=args.temperature,
 )
@@ -33,7 +36,7 @@ model = ChatOllama(
 # Define the chat prompt template
 prompt_template = ChatPromptTemplate.from_messages(
     [
-        SystemMessage(content=SYSTEM_PROMPT),
+        #SystemMessage(content=SYSTEM_PROMPT),
         MessagesPlaceholder(variable_name="messages", n_messages=1),
     ]
 )

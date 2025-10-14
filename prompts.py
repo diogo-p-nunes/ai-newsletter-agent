@@ -24,6 +24,7 @@ The following are several title and abstracts from recent AI papers (each with a
 Here are some rules to follow:
 - Explanation is a single paragraph.
 - Keep it concise, no more than 10 sentences FOR ALL PAPERS TOGETHER.
+- Do not mention or reference any paper in particular, but rather focus on the collective impact of these advancements.
 - Focus on practical implications and applications.
 
 Here is an example of a good explanation:
