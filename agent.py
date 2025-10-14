@@ -150,6 +150,6 @@ state = agent.invoke({})
 output = add_paper_links(state["combined_output"], papers)
 
 # Save summary to local file
-filename = f"/Users/diogo/Desktop/AI-Summaries/AI-Summary ({datetime.date.today().strftime('%Y%m%d')}).md"
+filename = f"./AI-Summaries/AI-Summary ({datetime.date.today().strftime('%Y%m%d')}).md"
 with open(filename, "w", encoding="utf-8") as f:
     f.write(output)
