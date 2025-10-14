@@ -1,17 +1,72 @@
-SYSTEM_PROMPT_SUMMARY = """
-You are a helpful assistant. You are going to receive several title and abstracts from recent AI papers (each with a unique ID), and your task is to summarize them into a concise summary. 
+SYSTEM_PROMPT = """You are a helpful assistant. You follow the user's instructions carefully to the last letter. You always answer in Markdown format."""
 
-You should maintain a professional and informative tone, respectful of the facts you are presenting.
+SUMMARY_PROMPT = """
+The following are several title and abstracts from recent AI papers (each with a unique ID). Your task is to summarize them into a concise summary.
 
-Here are some guidelines to follow:
+Here are some rules to follow:
+- Summary is a single paragraph.
 - Focus on the main contributions and findings of the papers.
-- Each mention of a paper MUST BE clearly linked to its unique ID within brackets like this: [ID] (nothing else!).
-- Summary must be formatted in Markdown.
+- Highlight relationships between papers if applicable.
+- Each mention of a paper MUST BE clearly linked to its unique ID within brackets.
 
-Your summary should be a single paragraph, with the following parts:
-1. An introductory sentence about the recent advancements in AI based on the papers provided.
-2. A concise summary of each paper's key contributions and findings, each linked to its ID within brackets. For example: "Paper [0] introduces a novel approach to..."
-3. A concluding sentence that encapsulates the overall significance of these advancements in the field of AI.
+Here is an example of a good summary:
+{example}
 
-Provide a single summary of all the papers, not one summary per paper. Ensure the summary is coherent and flows well, making it easy for readers to grasp the advancements in AI presented by these papers.
+Here are the papers to summarize:
+{papers}
+
+Please provide the summary below WITH NO PREAMBLE OR INTRODUCTION:
+"""
+
+WHY_IT_MATTERS_PROMPT = """
+The following are several title and abstracts from recent AI papers (each with a unique ID). Your task is to explain why the advancements in these papers matter specifically to an AI Engineer in the industry setting.
+
+Here are some rules to follow:
+- Explanation is a single paragraph.
+- Keep it concise, no more than 10 sentences FOR ALL PAPERS TOGETHER.
+- Focus on practical implications and applications.
+
+Here is an example of a good explanation:
+{example}
+
+Here are the papers to consider:
+{papers}
+
+Please provide the explanation below WITH NO PREAMBLE OR INTRODUCTION:
+"""
+
+OUTOFTHEBOX_PROMPT = """
+The following are several title and abstracts from recent AI papers (each with a unique ID). Your task is to brainstorm a creative, out-of-the-box application idea that leverages the advancements in these papers.
+
+Here are some rules to follow:
+- Keep it concise, no more than 2-3 sentences.
+- Think creatively about how these advancements could be applied in novel ways.
+- Ensure the idea is feasible with current technology.
+- Avoid generic ideas; be specific.
+- Make sure to reference the papers by their unique IDs within brackets.
+
+Here is an example of a good idea:
+{example}
+
+Here are the papers to consider:
+{papers}
+
+Please provide the idea below WITH NO PREAMBLE OR INTRODUCTION:
+"""
+
+LINERS_PROMPT = """
+The following are several title and abstracts from recent AI papers (each with a unique ID). Your task is to generate a list of concise, one-liner descriptions for each paper in bullet points.
+
+Here are some rules to follow:
+- Each description should be a single sentence in a single bullet point.
+- Focus on the main contribution or finding of the paper.
+- Each description MUST BE clearly linked to its unique ID within brackets.
+
+Here is an example of good one-liners:
+{example}
+
+Here are the papers to describe:
+{papers}
+
+Please provide the one-liners below WITH NO PREAMBLE OR INTRODUCTION:
 """

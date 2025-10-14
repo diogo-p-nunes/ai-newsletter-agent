@@ -41,10 +41,11 @@ def parse_summary(response: str) -> str:
     logger.info(f"Parsed summary: {summary}")
     return summary
 
-def add_paper_links(summary: str, papers: list) -> str:
-    id2link = {str(id): paper.pdf_url for id, paper in enumerate(papers)}
+def add_paper_links(output: str, papers: list) -> str:
+    id2link = {str(id+1): paper.pdf_url for id, paper in enumerate(papers)}
     for id in id2link:
-        summary = summary.replace(f"Paper {id}", f"Paper ([link]({id2link[id]}))")
+        target = f"[{id}]({id2link[id]})"
+        output = output.replace(f"[id={id}]", target)
 
-    logger.info(f"Summary with paper links: {summary}")
-    return summary
+    logger.info(f"Output with paper links: {output}")
+    return output
