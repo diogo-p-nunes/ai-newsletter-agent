@@ -1,7 +1,11 @@
 import arxiv
 import datetime
 import logging
+import telegram
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     format='format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"',
@@ -32,15 +36,6 @@ def fetch_papers_list():
     results = list(results)
     return results
 
-def parse_summary(response: str) -> str:
-    if "</think>" in response:
-        summary = response.split("</think>")[-1].strip()
-    else:
-        summary = response.strip()
-    
-    logger.info(f"Parsed summary: {summary}")
-    return summary
-
 def add_paper_links(output: str, papers: list) -> str:
     id2link = {str(id+1): paper.pdf_url for id, paper in enumerate(papers)}
     for id in id2link:
@@ -49,3 +44,12 @@ def add_paper_links(output: str, papers: list) -> str:
 
     logger.info(f"Output with paper links: {output}")
     return output
+
+async def send_telegram_message(message):
+    bot = telegram.Bot(os.getenv("TELEGRAM_BOT_TOKEN"))
+    for part in message.split('---'):
+        if len(part) > 4096:
+            for i in range(0, len(part), 4096):
+                await bot.send_message(text=part[i:i+4096], chat_id=os.getenv("TELEGRAM_USER_ID"))
+        else:
+            await bot.send_message(text=part, chat_id=os.getenv("TELEGRAM_USER_ID"))

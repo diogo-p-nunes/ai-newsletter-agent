@@ -1,5 +1,5 @@
 # ai-newsletter-agent
-AI Newsletter Agent that sends summarized info on new paper releases on arXiv. Based on OpenRouter
+AI Newsletter Agent that sends summarized info on new paper releases on arXiv. Based on OpenRouter.
 
 ### Create conda environment and install dependencies
 
@@ -11,8 +11,9 @@ pip install -r requirements.txt
 
 ### Example usage
 
-The following should take only a few seconds (~3s).
-
 ```bash
-OPENROUTER_API_KEY=<OPENROUTER_API_KEY> time python agent.py --model google/gemma-3-4b-it:free
+export OPENROUTER_API_KEY=<OPENROUTER_API_KEY>
+export TELEGRAM_BOT_TOKEN=<TELEGRAM_BOT_TOKEN>
+export TELEGRAM_USER_ID=<TELEGRAM_USER_ID>
+python main.py
 ```

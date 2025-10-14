@@ -2,7 +2,9 @@ import argparse
 import logging
 import datetime
 from typing import TypedDict
-from os import getenv
+import os
+from dotenv import load_dotenv
+import asyncio
 
 from langchain_openai import ChatOpenAI
 from langgraph.graph import START, END, MessagesState, StateGraph
@@ -11,8 +13,9 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 from prompts import SYSTEM_PROMPT, SUMMARY_PROMPT, WHY_IT_MATTERS_PROMPT, OUTOFTHEBOX_PROMPT, LINERS_PROMPT
 from examples import EXAMPLE_SUMMARY, EXAMPLE_WHY_IT_MATTERS, EXAMPLE_OUTOFTHE_BOX, EXAMPLE_LINERS
-from utils import fetch_papers_list, parse_summary, add_paper_links
+from utils import fetch_papers_list, add_paper_links, send_telegram_message
 
+load_dotenv()
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     format='format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"',
@@ -27,7 +30,7 @@ args = parser.parse_args()
 
 # Load model interface
 model = ChatOpenAI(
-    api_key=getenv("OPENROUTER_API_KEY"),
+    api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1",
     model=args.model,
     temperature=args.temperature,
@@ -107,10 +110,10 @@ def liners_node(state: State) -> dict:
     return {"liners": response.content.strip()}
 
 def aggregator_node(state: State) -> dict:
-    combined = f"### 🤖 AI Newsletter ({datetime.date.today()}):\n{state['summary']}\n\n---\n\n"
-    combined += f"### 🔹 AI Engineering - Why it Matters:\n{state['why_it_matters']}\n\n---\n\n"
-    combined += f"### 🔸 AI Engineering - Out-of-the-Box Ideas:\n{state['out_of_the_box']}\n\n---\n\n"
-    combined += f"### 📜 Paper Summaries:\n{state['liners']}\n"
+    combined = f"### 🤖 AI Newsletter ({datetime.date.today()}):\n\n{state['summary']}\n\n---\n\n"
+    combined += f"### 🔹 AI Engineering - Why it Matters:\n\n{state['why_it_matters']}\n\n---\n\n"
+    combined += f"### 🔸 AI Engineering - Out-of-the-Box Ideas:\n\n{state['out_of_the_box']}\n\n---\n\n"
+    combined += f"### 📜 Paper Summaries:\n\n{state['liners']}\n"
     return {"combined_output": combined.strip()}
 
 # Define the agent graph
@@ -143,13 +146,10 @@ for id, paper in enumerate(papers):
     papers_prompt += f"- Abstract: {paper.summary}\n"
     papers_prompt += f"{'-'*100}\n"
 
-# Run the agent
-state = agent.invoke({})
+def run_agent():
+    # Run the agent
+    state = agent.invoke({})
 
-# Parse and enhance the summary
-output = add_paper_links(state["combined_output"], papers)
-
-# Save summary to local file
-filename = f"./AI-Summaries/AI-Summary ({datetime.date.today().strftime('%Y%m%d')}).md"
-with open(filename, "w", encoding="utf-8") as f:
-    f.write(output)
+    # Parse and enhance the summary
+    output = add_paper_links(state["combined_output"], papers)
+    return output
