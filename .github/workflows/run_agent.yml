@@ -2,6 +2,8 @@ name: Run Main Script
 
 on:
   workflow_dispatch:  # allows manual trigger
+  schedule:
+    - cron: "0 11 * * 1"  # runs every monday at 11am
 
 jobs:
   run-script:
