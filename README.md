@@ -1,6 +1,8 @@
 # ai-newsletter-agent
 AI Newsletter Agent that sends summarized info on new paper releases on arXiv. Based on OpenRouter.
 
+- Update 09/12/2025
+
 ### Create conda environment and install dependencies
 
 ```bash
